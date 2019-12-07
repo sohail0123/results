@@ -1,0 +1,83 @@
+{% load staticfiles %}
+<html>
+<body>
+<div align="center" style="font-style: oblique">
+    <h1 style="background-color: bisque"><img src="{% static 'images/jntulogo.jpg' %}" width="100px" height="100px" style="border-radius: 40px" />
+    JAWAHARLAL NEHRU TECHNOLOGICAL UNIVERSITY</h1>
+</div>
+<hr/>
+<br/>
+<p align="center" style="font-size:25px;color: green;font-style: italic">RESULTS</p>
+
+
+<!--<table border="0" align="center" cellspacing="0" width="1000px">
+    <tr><td>-->
+<table align="center" border="0">
+    <tr >
+        <th>Student Id:</th>
+        <td>{{ data.student_id }}</td>
+    </tr>
+    <tr>
+        <th>Student Name:</th>
+        <td>{{ data.student_name }}</td>
+    </tr>
+</table>
+<br/>
+<table align="center" border="2" width="500px"  cellspacing="0" cellpadding="5">
+    <tr>
+        <th>SUBJECT</th>
+        <th>MARKS</th>
+        <th>RESULT</th>
+    </tr>
+    <tr align="center">
+        <td>Telugu</td>
+        <td>{{ data.telugu }}</td>
+        <td>{% if data.telugu >= 35 %} P {% else %} F {% endif %}</td>
+    </tr>
+    <tr align="center">
+        <td>English</td>
+        <td>{{ data.english }}</td>
+        <td>{% if data.english >= 35 %} P {% else %} F {% endif %}</td>
+    </tr>
+    <tr align="center">
+        <td>Maths-A</td>
+        <td>{{ data.maths_A }}</td>
+        <td>{% if data.maths_A >= 35 %} P {% else %} F {% endif %}</td>
+    </tr>
+    <tr align="center">
+        <td>Maths-B</td>
+        <td>{{ data.maths_B }}</td>
+        <td>{% if data.maths_B >= 35 %} P {% else %} F {% endif %}</td>
+    </tr>
+    <tr align="center">
+        <td>Science</td>
+        <td>{{ data.science }}</td>
+        <td>{% if data.science >= 35 %} P {% else %} F {% endif %}</td>
+    </tr>
+    <tr align="center">
+        <td>Social</td>
+        <td>{{ data.social }}</td>
+        <td>{% if data.social >= 35 %} P {% else %} F {% endif %}</td>
+    </tr>
+
+    <tr><td colspan="3">
+        <table border="0">
+            <tr><th>TOTAL : {{ total}}</th></tr>
+            <tr><th>GRADE : {{ grade }}</th></tr>
+        </table>
+    </td></tr>
+
+</table>
+   <!-- </td></tr>
+</table>-->
+<form action="{% url 'print' %}" method="post">
+    {% csrf_token %}
+<p align="center" style="font-size: 18px" >
+    <input type="hidden" value="{{ data.student_id }}" name="sid"/>
+    <button type="submit" name="hi">print..</button>
+</p>
+</form>
+</body>
+</html>
+
+

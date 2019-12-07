@@ -1,0 +1,16 @@
+<html>
+<body>
+{% include 'menu.html' %}
+{% if message %}
+   <h1 style="color:green" align="center">{{ message }}</h1>
+{% endif %}
+
+{% if message_update %}
+   <h1 style="color:green" align="center">{{ message_update }}</h1>
+{% endif %}
+
+{% if message_delete %}
+   <h1 style="color:red" align="center">{{ message_delete }}</h1>
+{% endif %}
+</body>
+</html>

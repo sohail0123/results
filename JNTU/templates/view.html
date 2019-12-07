@@ -1,0 +1,41 @@
+<html>
+<body>
+
+{% include 'menu.html' %}
+    <br/>
+<table align="center" border="2">
+    <tr align="center" style="font-size:30px" >
+        <th colspan="10" style="color:red">EMPLOYEE DETAILS</th>
+    </tr>
+    <tr align="center" bgcolor="#fff8dc">
+        <th width="100px" >IDNO</th>
+        <th width="100px">NAME</th>
+        <th width="100px">GENDER</th>
+        <th width="100px">DATE OF BIRTH</th>
+        <th width="100px">QUALIFICATION</th>
+        <th width="100px">BLOOD GROUP</th>
+        <th width="100px">DEPARTMENT</th>
+        <th width="100px">CONTACT NO</th>
+        <th width="100px">EMAIL ID</th>
+        <th width="100px">IMAGE</th>
+    </tr>
+    {% for x in data %}
+        <tr>
+            <td>{{ x.emp_id }}</td>
+            <td>{{ x.emp_name }}</td>
+            <td>{{ x.emp_gender }}</td>
+            <td>{{ x.emp_db}}</td>
+            <td>{{ x.emp_quali }}</td>
+            <td>{{ x.emp_blood_g }}</td>
+            <td>{{ x.emp_department }}</td>
+            <td>{{ x.emp_contact }}</td>
+            <td>{{ x.email }}</td>
+            <td><img src="{{ x.emp_img.url }}" width="80px" height="80px"/></td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
+
+

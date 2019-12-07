@@ -1,0 +1,84 @@
+<html>
+<body>
+{% include 'menu.html' %}
+<br/>
+<form action="{% url 'e_save' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+<table align="center" border="2" cellpadding="10" cellspacing="0">
+    <tr align="center">
+        <th colspan="2">Add Employee Details</th>
+    </tr>
+    <tr><th>Employee Id</th>
+        <th>
+            <input type="number" name="empid" value="{{ id }}" readonly />
+        </th>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td><input type="text" name="ename" required /></td>
+    </tr>
+     <tr>
+        <th>Gender</th>
+        <td><input type="radio" name="gender" value="male" required /> Male <br/>
+         <input type="radio" name="gender" value="female" required /> Female </td>
+    </tr>
+    <tr>
+        <th>Date Of Birth</th>
+        <td><input type="date" name="edb" required /></td>
+    </tr>
+    <tr>
+        <th>qualification</th>
+        <td><select name="qualification">
+            <option >select</option>
+            <option value="B.tech"> B.tech</option>
+            <option value="M.tech"> M.tech</option>
+            <option value="B.Ed">B.Ed</option>
+            <option value="M.sc">M.sc</option>
+        </select></td>
+    </tr>
+    <tr>
+        <th>Blood Groop</th>
+        <td><select name="bloodgr">
+            <option >select</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select></td>
+    </tr>
+    <tr>
+        <th>Department</th>
+        <td><input type="radio" name="edepart" value="teaching" required/> Teaching<br/>
+         <input type="radio" name="edepart" value="non teaching" required/>Non Teaching</td>
+    </tr>
+    <tr>
+        <th>Contact</th>
+        <td><input type="number" name="econt" required /></td>
+    </tr>
+    <tr>
+        <th>Email Id</th>
+        <td><input type="email" name="eemail"  placeholder="eg..@gmail.com" required/></td>
+    </tr>
+    <tr>
+        <th>Image</th>
+        <td><input type="file"  name="eimg" required/></td>
+    </tr>
+
+    <tr align="center">
+        <th colspan="2"><button type="submit" class="btn btn-info">save</button></th>
+    </tr>
+</table>
+</form>
+</body>
+</html>
+
+
+
+
+
+
