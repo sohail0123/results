@@ -1,8 +1,12 @@
 {% load staticfiles %}
 <html>
 <body>
-{% include 'menu.html' %}
-    <br/>
+{% if request.session.user %}
+
+    {% include 'menu.html' %}
+
+    <p align="right" style="color: red">welcome {{ request.session.user }}</p><br/>
+
 <table align="center" border="3">
     <tr align="center" style="font-size:25px" >
         <th colspan="5" style="color:navy">EMPLOYEE DETAILS</th>
@@ -27,6 +31,9 @@
         </td>
     </tr>
     {% endfor %}
+    {% else %}
+        {% include 'login.html' %}
+{% endif %}
 </table>
 </body>
 </html>

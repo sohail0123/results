@@ -5,46 +5,53 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 import json
-
 from django_xhtml2pdf.utils import generate_pdf
-
-from .models import StudentModel,EmployeeModel
+from .models import StudentModel,EmployeeModel,AdminModel
 from django.db import IntegrityError
 from JNTU import settings as se
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
 
-# Create your views here.
 def loginPage(request):
-    return render(request,"login.html")
-
-
+    try:
+        value  = request.session["user"]
+        return render(request,"welcome.html",{'data':value})
+    except KeyError:
+        return render(request,"login.html")
 
 def loginCheck(request):
     name=request.POST["uname"]
     password = request.POST["password"]
-    if name == "admin" and password == "admin":
-        return render(request,"welcome.html")
-    else:
+    try:
+        res = AdminModel.objects.get(admin_name=name,admin_password=password)
+    except AdminModel.DoesNotExist:
         messages.error(request,"details are not matched")
         return redirect('login')
+    else:
+        request.session["user"] = name
+        return render(request,"welcome.html",{"data":name})
 
 def homePage(request):
     return render(request,"welcome.html")
 
 def logOut(request):
+    del request.session["user"]
     return loginPage(request)
 
 def addEmployee(request):
     auto_id=0
     try:
-        res = EmployeeModel.objects.all()[::-1][0]
-        auto_id= int(res.emp_id)+1
-    except IndexError:
-        auto_id = 1100
-    return render(request,"addemp.html",{"id":auto_id})
-
+        value = request.session["user"]
+    except KeyError:
+        return loginPage(request)
+    else:
+        try:
+            res = EmployeeModel.objects.all()[::-1][0]
+            auto_id= int(res.emp_id)+1
+        except IndexError:
+            auto_id = 1100
+        return render(request,"addemp.html",{"id":auto_id,"data":value})
 
 def saveEmployee(request):
     eid = request.POST.get("empid")
@@ -68,14 +75,13 @@ def saveEmployee(request):
     else:
         subject = "Employee Registration"
         message = '''dear %s, 
-        your registered in our college 
+        you are registered in our college 
         your idno :%s
         your password :%s
 
             thank you..''' % (ename, eid, epassword)
         send_mail(subject, message, se.EMAIL_HOST_USER, [email])
         return render(request, "success.html", {"message": "registered successfully"})
-
 
 def viewEmployee(request):
     res = EmployeeModel.objects.all()
@@ -90,7 +96,6 @@ def update_Delete(request):
 def updateEmployee(request,e_id):
     qs = EmployeeModel.objects.get(emp_id=e_id)
     return render(request,"update.html",{"data":qs})
-
 
 def updateSave(request):
     u_eid = request.POST.get("empid")
@@ -131,10 +136,7 @@ class EmpLoginCeck(View):
             print(emp_details)
             try:
                 qs = EmployeeModel.objects.get(emp_id=emp_details["eidno"], emp_password=emp_details["epassword"])
-                print(qs)
                 d1={"eid":qs.emp_id,"ename":qs.emp_name}
-                # print(d1["midno"],d1["password"])
-                # d2="success"
                 js = json.dumps(d1)
                 return HttpResponse(js,content_type="application/json", status=200)
             except EmployeeModel.DoesNotExist:
@@ -161,15 +163,10 @@ class UpdateMarks(View):
             print(s_id)
             old_data = StudentModel.objects.get(student_id=s_id)
         except StudentModel.DoesNotExist:
-            #json_mess = json.dumps({"error_message":"Given IDNO is Invalid"})
             return HttpResponse(content_type="application/json",status=400)
         else:
-            # old_data is in object Format but we need in dict format
-            # Converting object to dict
-            #old_data_dict ={"idno":old_data.idno,"name":old_data.name,"salary":old_data.salary}
             json_data = serialize("json",[old_data])
             return HttpResponse(json_data,content_type="application/json", status=200)
-
 
 def results(request):
     return render(request,"results.html")
@@ -199,8 +196,9 @@ def resultMixin(s_id):
 
     context = {
         "data":res1,"total":total,"grade":grade
-    }
+        }
     return context
+
 def getResult(request):
     s_id = request.POST.get("sid")
     try:
@@ -216,17 +214,4 @@ def pdfGenerate(request):
     context = resultMixin(id)
     result = generate_pdf('getresult.html', file_object=resp,context=context)
     return result
-'''def getResult(request):
-    s_id = request.POST.get("sid")
-    try:
-        result_data = resultMixin(s_id)
-    except StudentModel.DoesNotExist:
-        return render(request,"results.html",{"error":"enter correct id"})
-    else:
-        if request.POST['hi'] == 'get':
-            return render(request,"getresult.html",context=result_data)
-        if request.POST['hi'] == 'print':
-            resp = HttpResponse(content_type='application/pdf')
-            #context = result_data
-            result = generate_pdf('getresult.html', file_object=resp, context=result_data)
-            return result'''
+

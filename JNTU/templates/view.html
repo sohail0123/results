@@ -1,8 +1,10 @@
 <html>
 <body>
+{% if request.session.user %}
 
-{% include 'menu.html' %}
-    <br/>
+    {% include 'menu.html' %}
+
+    <p align="right" style="color: red"> welcome {{ request.session.user }}</p><br/>
 <table align="center" border="2">
     <tr align="center" style="font-size:30px" >
         <th colspan="10" style="color:red">EMPLOYEE DETAILS</th>
@@ -35,6 +37,9 @@
     {% endfor %}
 </table>
 
+    {% else %}
+        {% include 'login.html' %}
+{% endif %}
 </body>
 </html>
 

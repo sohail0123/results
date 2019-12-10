@@ -1,6 +1,9 @@
 <html>
 <body>
+{% if request.session.user %}
+
 {% include 'menu.html' %}
+      <p align="right" style="color: red">welcome {{ request.session.user }}</p><br/>
 <form action="{% url 'f_update' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
@@ -71,6 +74,9 @@
 
 </table>
 </form>
+    {% else %}
+        {% include 'login.html' %}
+{% endif %}
 </body>
 </html>
 

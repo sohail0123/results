@@ -21,5 +21,10 @@ class StudentModel(models.Model):
     maths_B = models.IntegerField()
     science = models.IntegerField()
     social = models.IntegerField()
+class AdminModel(models.Model):
+    admin_name = models.CharField(max_length=30)
+    admin_password = models.CharField(max_length=8)
 
+    def __str__(self):
+        return self.admin_name
 

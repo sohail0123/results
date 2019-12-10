@@ -1,8 +1,12 @@
 <html>
 <body>
 
+{% if request.session.user %}
 {% include 'menu.html' %}
+<p align="right" style="color:red">welcome {{ data }} </p>
 <h1>welcome</h1>
-
+    {% else %}
+        {% include 'login.html' %}
+{% endif %}
 </body>
 </html>

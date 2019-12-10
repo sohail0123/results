@@ -1,6 +1,8 @@
 <html>
 <body>
+
 {% include 'menu.html' %}
+<p align="right" style="color: red"> welcome {{ data }}</p>
 <br/>
 <form action="{% url 'e_save' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
